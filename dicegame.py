@@ -31,9 +31,9 @@ def roll_dice(number_of_sides):
     print "TOTAL ROLL IS A %s \n" % str(total_roll)
     sleep(.5)
     if guess == total_roll:
-      print "       YOU RULE DUDE!"
+      print "       YOU RULE DUDE!\n"
     else:
-      print "       ANOTHER LOSER"
+      print "       ANOTHER LOSER\n"
 
 def calc_odds(sides, guess):
     possible_outcomes = sides ** 2
@@ -46,9 +46,8 @@ def calc_odds(sides, guess):
     return float(combos / possible_outcomes)
 
 die = int(raw_input("""
-                DICE ROLL SIMULATOR
+            DICE SIMULATOR, I WILL ROLL 2 DICE
 
-    HOW MANY SIDES ARE ON THE DICE YOU WANT TO PLAY WITH?
-    """))
+     HOW MANY SIDES ARE ON THE DICE YOU WANT TO PLAY WITH?\n\n"""))
 
 roll_dice(die)
