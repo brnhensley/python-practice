@@ -1,13 +1,14 @@
 from random import randint
 
-board = []
 display_board = []
+play_board = []
+x = 8
+for space in range(0, x):
+    display_board.append(["O"] * x)
+    play_board.append(["O"] * x)
 
-for x in range(0, 10):
-    display_board.append(["O"] * 10)
-
-def print_board(board):
-    for row in board:
+def print_board(board_to_print):
+    for row in board_to_print:
         print " ".join(row)
     print
 
@@ -41,32 +42,42 @@ def random_position(board, ship_size):
     return board
 
 def guess():
-    guess = []
-    guess.append(int(raw_input("Guess Row: ")) - 1)
-    guess.append(int(raw_input("Guess Col: ")) - 1)
-    update_board(guess)
+    guess_row = int(raw_input("GUESS ROW: ")) - 1
+    guess_col = int(raw_input("GUESS COL: ")) - 1
+    return guess_row, guess_col
 
-def update_board(user_guess):
-    if board[user_guess[0]][user_guess[1]] == "1":
-        print "\nIt's a hit!\n"
-        board[user_guess[0]][user_guess[1]] = "X"
+def update_board(row, col):
+    if row not in range(0, x) or col not in range(0, x):
+        print "\nGUESS OUT OF BOUNDS, TRY AGAIN\n"
     else:
-        print "You missed my battleship!\n"
-        board[user_guess[0]][user_guess[1]] = "#"
-    print_board(board)
-    check_win()
+        if play_board[row][col] == "1":
+            print "\nIT'S A HIT!\n"
+            play_board[row][col] = "X"
+            display_board[row][col] = "X"
+        elif play_board[row][col] == "#" or play_board[row][col] == "X":
+            print "\nYOU ALREADY TRIED THAT SPACE! \nGUESS AGAIN"
+        else:
+            print "\nYOU MISSED!\n"
+            play_board[row][col] = "#"
+            display_board[row][col] = "#"
 
 def check_win():
     win = True
-    for row in board:
+    for row in play_board:
         if "1" in row:
             win = False
-    if not win:
-        guess()
-    else:
-        print "YOU FUCKING SANK MY BATTLESHIP! \n"
+    return win
 
+play_board = random_position(play_board, randint(2,6))
 
-board = random_position(display_board, randint(2,6))
-print_board(board)
-guess()
+for turn in range(0,10):
+    print_board(display_board)
+    row, col = guess()
+    update_board(row, col)
+    if check_win():
+        print_board(play_board)
+        print "YOU SANK MY BATTLESHIP! \nYOU WIN"
+        break
+
+print "OUT OF TURNS, YOU LOSE\n"
+print_board(play_board)
